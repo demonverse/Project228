@@ -1,1 +1,292 @@
-hello multiverse!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CHANGE: Update this title if you want something different in the browser tab -->
+  <title>DemonBunny</title>
+  <style>
+    /* ============================================================
+       GLOBAL RESET + BASE
+    ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* CHANGE: Main background and text colors */
+    body {
+      background-color: #0a0a0a;
+      color: #e8e0d0;
+      /* CHANGE: Swap font stack if you want a different feel.
+         These are system fonts so no loading needed. */
+      font-family: "Courier New", Courier, monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 12px;
+    }
+
+    /* ============================================================
+       PAGE WRAPPER — narrow centered column, old-web feel
+    ============================================================ */
+    .page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 0 80px;
+    }
+
+    /* ============================================================
+       HEADER / NAME BLOCK
+    ============================================================ */
+    .site-header {
+      border-top: 3px solid #ff2d78;      /* CHANGE: accent color */
+      border-bottom: 1px solid #333;
+      padding: 20px 0 18px;
+      margin-bottom: 36px;
+    }
+
+    .site-name {
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: -1px;
+      /* CHANGE: name color */
+      color: #ff2d78;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .site-tagline {
+      margin-top: 6px;
+      font-size: 12px;
+      /* CHANGE: tagline color */
+      color: #888;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       SECTION LABELS — the lil' "[  ]" eyebrow thing
+    ============================================================ */
+    .section-label {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      /* CHANGE: label background + text */
+      background: #1a1a1a;
+      color: #ff2d78;
+      border: 1px solid #ff2d78;
+      padding: 2px 8px;
+      margin-bottom: 12px;
+    }
+
+    /* ============================================================
+       CONTENT SECTIONS
+    ============================================================ */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section p {
+      color: #c8c0b0;
+      max-width: 520px;
+    }
+
+    /* ============================================================
+       IMAGE PLACEHOLDER TILES
+       These are where your art goes.
+       Replace the <div class="img-tile"> elements with <img> tags.
+    ============================================================ */
+    .img-grid {
+      display: grid;
+      /* CHANGE: adjust columns — 3 feels right for sticker art */
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .img-tile {
+      aspect-ratio: 1 / 1;
+      /* CHANGE: placeholder tile colors — swap these for your images */
+      background: #1c1c1c;
+      border: 1px solid #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #444;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: default;
+      transition: border-color 0.15s;
+    }
+
+    /* Each tile gets a slightly different tint so they're visually distinct */
+    .img-tile:nth-child(1) { background: #1a1a22; }
+    .img-tile:nth-child(2) { background: #1a1f1a; }
+    .img-tile:nth-child(3) { background: #1f1a1a; }
+    .img-tile:nth-child(4) { background: #1f1a1f; }
+    .img-tile:nth-child(5) { background: #1a1f1f; }
+    .img-tile:nth-child(6) { background: #1f1f1a; }
+
+    .img-tile:hover {
+      border-color: #ff2d78;
+    }
+
+    /* ============================================================
+       LINK — the one way in
+    ============================================================ */
+    .contact-link {
+      display: inline-block;
+      margin-top: 10px;
+      /* CHANGE: link color */
+      color: #ff2d78;
+      text-decoration: none;
+      border-bottom: 1px dashed #ff2d78;
+      font-size: 13px;
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+
+    .contact-link:hover {
+      color: #fff;
+      border-bottom-color: #fff;
+    }
+
+    /* ============================================================
+       DIVIDER
+    ============================================================ */
+    .divider {
+      border: none;
+      border-top: 1px solid #222;
+      margin: 36px 0;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 1px;
+      padding-top: 24px;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* ============================================================
+       BLINK — because it's old skool
+    ============================================================ */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .blink {
+      animation: blink 1.1s step-end infinite;
+      /* CHANGE: cursor blink color */
+      color: #ff2d78;
+    }
+
+    /* ============================================================
+       RESPONSIVE — narrow screens
+    ============================================================ */
+    @media (max-width: 420px) {
+      .site-name { font-size: 24px; }
+      .img-grid  { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- ══════════════════════════════════════════
+         HEADER
+    ══════════════════════════════════════════ -->
+    <header class="site-header">
+      <!-- CHANGE: Your name/handle here -->
+      <div class="site-name">DemonBunny<span class="blink">_</span></div>
+      <!-- CHANGE: One-line summary of you -->
+      <div class="site-tagline">sticker art &amp; heart driven websites</div>
+    </header>
+
+
+    <!-- ══════════════════════════════════════════
+         WHO I AM
+    ══════════════════════════════════════════ -->
+    <section class="section">
+      <span class="section-label">who i am</span>
+      <!-- CHANGE: Write whatever you want here. Keep it short or go long. -->
+      <p>
+        DemonBunny. I make sticker art and heart driven websites.
+        This is my page. Not Instagram. Not an algorithm. Just this.
+      </p>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         THE WORK
+         Replace the .img-tile divs with your actual images like:
+         <img src="your-image.jpg" alt="describe it" style="width:100%;aspect-ratio:1/1;object-fit:cover;">
+    ══════════════════════════════════════════ -->
+    <section class="section">
+      <span class="section-label">the work</span>
+      <!-- CHANGE: Replace this note once you have images -->
+      <p style="font-size:11px; color:#555; margin-bottom:12px;">[ images coming — to be confirmed ]</p>
+
+      <div class="img-grid">
+        <!-- CHANGE: Replace each .img-tile div with an <img> tag when ready -->
+        <div class="img-tile">img</div>
+        <div class="img-tile">img</div>
+        <div class="img-tile">img</div>
+        <div class="img-tile">img</div>
+        <div class="img-tile">img</div>
+        <div class="img-tile">img</div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         THE VIBE
+    ══════════════════════════════════════════ -->
+    <section class="section">
+      <span class="section-label">the vibe</span>
+      <!-- CHANGE: Say whatever you want about the vibe/aesthetic/feeling -->
+      <p>
+        Old skool internet. When pages had personality.
+        Before the feed. Before the grid. Before everyone looked the same.
+      </p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══════════════════════════════════════════
+         ONE WAY IN
+    ══════════════════════════════════════════ -->
+    <section class="section">
+      <span class="section-label">one way in</span>
+      <p>Want to talk? Message me.</p>
+      <!-- CHANGE: Update the href and link text if your handle changes -->
+      <a
+        class="contact-link"
+        href="https://www.instagram.com/_demon.bunny_"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        instagram / _demon.bunny_
+      </a>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         FOOTER
+    ══════════════════════════════════════════ -->
+    <footer class="site-footer">
+      <!-- CHANGE: Update year, or remove the whole footer if you don't want it -->
+      &copy; 2024 DemonBunny &nbsp;·&nbsp; made with intention
+    </footer>
+
+  </div><!-- /page -->
+
+</body>
+</html>
