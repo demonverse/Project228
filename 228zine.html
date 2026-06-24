@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>228 Zine</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --pink: #ff2d78;
+    --dim-pink: #a01a47;
+    --bg: #0a0a0a;
+    --fg: #c8c8c8;
+    --dim: #666;
+    --border: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    /* noise texture via SVG data URI */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  /* nav */
+  .nav {
+    color: var(--dim);
+    margin-bottom: 2rem;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+  }
+  .nav a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .nav a:hover { color: var(--pink); }
+  .nav span { color: var(--dim); margin: 0 0.3rem; }
+
+  /* ascii header */
+  .ascii-header {
+    white-space: pre;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--pink);
+    margin-bottom: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .tagline {
+    color: var(--dim);
+    font-size: 12px;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+
+  /* section headers */
+  .section-head {
+    color: var(--pink);
+    margin: 2rem 0 0.75rem;
+    font-size: 13px;
+  }
+  .section-head::before { content: '--[ '; }
+  .section-head::after  { content: ' ]'; }
+
+  /* divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* body text */
+  p {
+    color: var(--fg);
+    margin-bottom: 0.75rem;
+    max-width: 68ch;
+  }
+
+  .highlight { color: var(--pink); }
+  .dim { color: var(--dim); }
+
+  /* manifesto block */
+  .manifesto {
+    border-left: 2px solid var(--pink);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--fg);
+  }
+
+  /* notify form */
+  .notify-block {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: rgba(255,45,120,0.03);
+  }
+
+  .notify-block p {
+    margin-bottom: 0.75rem;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .notify-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .notify-row input[type="text"] {
+    background: #111;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 0.4rem 0.75rem;
+    outline: none;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .notify-row input[type="text"]:focus {
+    border-color: var(--pink);
+  }
+
+  .notify-row button {
+    background: var(--pink);
+    color: #000;
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .notify-row button:hover {
+    background: #fff;
+  }
+
+  .confirm-msg {
+    color: var(--pink);
+    font-size: 13px;
+    margin-top: 0.5rem;
+    display: none;
+  }
+
+  /* instagram handle */
+  .handle {
+    color: var(--dim);
+    font-size: 12px;
+  }
+  .handle a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .handle a:hover { color: var(--pink); }
+
+  /* footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--dim);
+    font-size: 12px;
+  }
+
+  /* blinking cursor */
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--pink);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* issue table */
+  .issue-row {
+    display: flex;
+    gap: 2rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .issue-row:last-child { border-bottom: none; }
+  .issue-num { color: var(--pink); min-width: 4ch; }
+  .issue-status { color: var(--dim); font-size: 12px; }
+
+  @media (max-width: 500px) {
+    .ascii-header { font-size: 8px; }
+    .notify-row { flex-direction: column; }
+    .notify-row input[type="text"] { min-width: 0; width: 100%; }
+    .notify-row button { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- nav -->
+  <div class="nav">
+    [ <a href="#">About</a> ]
+    <span>|</span>
+    [ <a href="#">Issues</a> ]
+    <span>|</span>
+    [ <a href="#">Submit</a> ]
+    <span>|</span>
+    [ <a href="https://instagram.com/_demon.bunny_" target="_blank">Instagram</a> ]
+  </div>
+
+  <!-- ASCII header -->
+  <div class="ascii-header">
+ ######  ######  #####      ######  ##### #   # ####### 
+     #      #  #    #         #    #   # ##  # #       
+  ###    ###   ######        #    ##### # # # #####   
+ #          #  #    #        #    #   # #  ## #       
+ ######  ######  #####        #    #   # #   # #######
+  </div>
+
+  <div class="tagline">
+    <span class="dim">:: a curated zine for the slap community ::</span>
+    <span class="dim"> | </span>
+    <span class="dim">est. 2024</span>
+    <span class="cursor"></span>
+  </div>
+
+  <!-- manifesto -->
+  <h2 class="section-head">what this is</h2>
+
+  <div class="manifesto">
+    <p>Instagram keeps banning us.<br>
+    We keep rebuilding.<br>
+    228 Zine is the backup plan that doesn't disappear.</p>
+  </div>
+
+  <p>
+    A curated editorial layer for sticker artists, slap writers, and anyone 
+    deep enough in the culture to know what a <span class="highlight">228</span> is.
+    Not a platform. Not a social network. A zine — with taste, with curation, 
+    with an actual editorial eye.
+  </p>
+
+  <p>
+    Your work lives here even when Meta decides it doesn't.
+  </p>
+
+  <hr class="divider">
+
+  <!-- issues -->
+  <h2 class="section-head">issues</h2>
+
+  <div class="issue-row">
+    <span class="issue-num">#001</span>
+    <span>Founding Issue</span>
+    <span class="issue-status">— coming soon</span>
+  </div>
+  <div class="issue-row">
+    <span class="issue-num">#002</span>
+    <span>—</span>
+    <span class="issue-status">— TBA</span>
+  </div>
+  <div class="issue-row">
+    <span class="issue-num">#003</span>
+    <span>—</span>
+    <span class="issue-status">— TBA</span>
+  </div>
+
+  <hr class="divider">
+
+  <!-- notify -->
+  <h2 class="section-head">get notified</h2>
+
+  <div class="notify-block">
+    <p>DM us on Instagram to get notified when issue #001 drops.<br>
+    No email list. No newsletter. No data stored.</p>
+    <div class="notify-row">
+      <a href="https://instagram.com/_demon.bunny_" target="_blank">
+        <button>DM @_demon.bunny_</button>
+      </a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- featured / submit -->
+  <h2 class="section-head">want to be featured?</h2>
+
+  <p>
+    We're curating work for issue #001. If you're in the slap community 
+    and want your work in the zine, reach us on Instagram:
+  </p>
+
+  <p class="handle">
+    → <a href="https://instagram.com/_demon.bunny_" target="_blank">@_demon.bunny_</a>
+    <span class="dim"> // DMs open</span>
+  </p>
+
+  <hr class="divider">
+
+  <!-- footer -->
+  <div class="footer">
+    <span>228 Zine</span>
+    <span class="dim"> | </span>
+    <span class="dim">by</span>
+    <a href="https://instagram.com/_demon.bunny_" target="_blank" style="color:var(--fg);text-decoration:none;"> @_demon.bunny_</a>
+    <span class="dim"> | </span>
+    <span class="dim">for the slap community</span>
+    <br><br>
+    <span class="dim">// not affiliated with USPS. you know what 228 means.</span>
+  </div>
+
+</div>
+
+
+
+</body>
+</html>
